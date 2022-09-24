@@ -10,8 +10,8 @@ class MarketMaker:
     def load_questions(self):
 
         print("Loading Question Bank Questions...")
-        self.result = json.loads("question_bank.json")
-        self.result.shuffle()
+        with open("question_bank.json") as file:
+            self.result = json.load(file)
 
     def play(self):
 
@@ -24,12 +24,14 @@ class MarketMaker:
         is_liquid = False
 
         question = min(self.result, key = lambda x: x['Count'])
+        question_idx = self.result.index(question)
+        self.result[question_idx]['Count'] += 1
 
         print("Let us play the game!!")
         print("--------------------------------")
         print("Question: ", question.get('Question'))
 
-        while count < self.max_true_loss:
+        while count < self.max_num_guesses and not is_liquid:
 
             bid = float(input("Bid: "))
             ask = float(input("Ask: "))
@@ -64,8 +66,17 @@ class MarketMaker:
                     print("Wrong user position!, please try again")
                     expected_user_position = int(input("Please state your position at the end of this game: "))
 
+                else:
+                    print("Correct user position!")
+
+        print("-------------------------------------------")
         print("We have come to the end of the game")
         print("Goodbye!")
+
+        with open("question_bank.json") as file:
+
+            json.dump(self.result, file)
+
 
 
 
