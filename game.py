@@ -2,7 +2,7 @@ import json
 
 class MarketMaker:
 
-    def __init__(self, max_num_guesses: int = 5, error_percentage: float = 0.1):
+    def __init__(self, max_num_guesses: int = 8, error_percentage: float = 0.1):
 
         self.max_num_guesses = max_num_guesses
         self.error_percentage = error_percentage
@@ -73,7 +73,7 @@ class MarketMaker:
         print("We have come to the end of the game")
         print("Goodbye!")
 
-        with open("question_bank.json") as file:
+        with open("question_bank.json", "w") as file:
 
             json.dump(self.result, file)
 
